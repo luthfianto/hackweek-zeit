@@ -2,12 +2,18 @@ import { SidebarMainMenu } from '~/interfaces/types';
 
 const menus: Record<string, SidebarMainMenu> = {
   first: {
-    title: 'Home',
+    title: 'Event 1',
     path: '/first-demo',
     icon: 'docs'
   },
   second: {
-    title: 'About',
+    title: 'Event 2',
+    path: '/second-demo',
+    icon: 'dict'
+  }
+  ,
+  third: {
+    title: 'Event 3',
     path: '/second-demo',
     icon: 'dict'
   }

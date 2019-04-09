@@ -1,30 +1,40 @@
-import * as React from 'react';
-
 import { Button } from '@kata-kit/button';
-import { Dashboard } from '@kata-kit/dashboard';
 import { Board } from '@kata-kit/common';
-import { Modal, ModalHeader, ModalBody, ModalFooter } from '@kata-kit/modal';
+import { Dashboard } from '@kata-kit/dashboard';
+import { ModalBody, ModalFooter, ModalHeader } from '@kata-kit/modal';
+import * as React from 'react';
+import { Table } from 'reactstrap';
+
+// import 'bootstrap/dist/css/bootstrap.min.css';
+import 'reactstrap';
 
 interface HomeFirstPageState {
   open: boolean;
+  hasil: any;
+  errors?: string;
 }
 
 class HomeFirstPage extends React.Component<{}, HomeFirstPageState> {
+  state = {
+    open: false,
+    hasil: null as any,
+    errors: undefined,
+  };
+
+  private readonly title = "Speakers";
+
   constructor(props: any) {
     super(props);
-
-    this.state = {
-      open: false
-    };
   }
 
   toggleDrawer() {
-    this.setState(prevState => ({
-      open: !prevState.open
+    this.setState((prevState) => ({
+      open: !prevState.open,
     }));
   }
 
   renderInner() {
+    console.log("renderInner terpencet")
     return (
       <>
         <ModalHeader title="Modal Title" />
@@ -54,64 +64,56 @@ class HomeFirstPage extends React.Component<{}, HomeFirstPageState> {
     );
   }
 
-  public render() {
-    const { open } = this.state;
+  async componentDidMount() {
+    try {
+      const hasil1 = await fetch('https://bot-event.firebaseio.com/events.json');
+      const hasil = (await hasil1.json())[0]
+      console.log(hasil)
+      this.setState({ hasil });
+    } catch (err) {
+      this.setState({ errors: err.message });
+      console.error(err);
+      alert(err)
+    }
+  }
 
+  _masihKosong() {
     return (
-      <Dashboard title="First Page" tooltip="Homepage of the Wicara demo">
-        <Board>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Facillimum
-            id quidem est, inquam. Ita multa dicunt, quae vix intellegam. Hic
-            Speusippus, hic Xenocrates, hic eius auditor Polemo, cuius illa ipsa
-            sessio fuit, quam videmus.{' '}
-          </p>
-
-          <p>
-            Illa videamus, quae a te de amicitia dicta sunt. Totum autem id
-            externum est, et quod externum, id in casu est. Equidem etiam
-            Epicurum, in physicis quidem, Democriteum puto. Tollitur beneficium,
-            tollitur gratia, quae sunt vincla concordiae. Quoniam, si dis
-            placet, ab Epicuro loqui discimus. Ut nemo dubitet, eorum omnia
-            officia quo spectare, quid sequi, quid fugere debeant? Qui ita
-            affectus, beatum esse numquam probabis; Quae cum dixisset paulumque
-            institisset,{' '}
-            <a
-              href="https://www.youtube.com/watch?v=zefOP3BB70g"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Quid est? Tollenda est atque extrahenda radicitus
-            </a>
-            .{' '}
-          </p>
-
-          <p>
-            Duo Reges: constructio interrete. Sed nimis multa. Cuius ad naturam
-            apta ratio vera illa et summa lex a philosophis dicitur. Bona autem
-            corporis huic sunt, quod posterius posui, similiora. Nondum autem
-            explanatum satis, erat, quid maxime natura vellet. Quis tibi ergo
-            istud dabit praeter Pyrrhonem,{' '}
-            <a
-              href="https://www.youtube.com/watch?v=7Y2OIfrT_CU"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Aristonem eorumve similes
-            </a>
-            , quos tu non probas?{' '}
-          </p>
-
-          <Button color="primary" onClick={() => this.toggleDrawer()}>
-            Open modal
-          </Button>
-
-          <Modal show={open} onClose={() => this.toggleDrawer()}>
-            {this.renderInner()}
-          </Modal>
-        </Board>
-      </Dashboard>
+      <Dashboard title={this.title} tooltip="Homepage of the Wicara demo">
+        masih kosong
+    </Dashboard>
     );
+  }
+
+  render() {
+    const { hasil, errors } = this.state;
+    if (!hasil) {
+      return this._masihKosong();
+    }
+    const { speakers } = hasil || ({} as any);
+
+    if (!speakers) {
+      return this._masihKosong();
+    }
+
+    return <Dashboard title={this.title}  tooltip="Homepage of the Wicara demo"><Board>
+      <div style={{ textAlign: "right", marginBottom: "10px" }}>
+      <Button color="primary" onClick={()=> this.renderInner()}>+ Add</Button>
+      </div>
+      <Table>
+        <thead><td>Judul</td></thead>
+        <tbody>
+          {speakers.map((speaker: any) =>
+            <>
+              <tr><td>{speaker.nama_speaker}</td></tr>
+              <tr><td>{speaker.nama_speaker}</td></tr>
+              <tr><td>{speaker.nama_speaker}</td></tr>
+            </>
+          )}
+        </tbody>
+      </Table>
+    </Board>
+    </Dashboard>
   }
 }
 

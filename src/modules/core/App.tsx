@@ -1,31 +1,20 @@
-import * as React from 'react';
-import {
-  Switch,
-  Route,
-  RouteComponentProps,
-  withRouter,
-  Redirect
-} from 'react-router-dom';
-
-import {
-  Wrapper,
-  Content,
-  Topbar,
-  SidebarAndContent,
-  Sidebar,
-  SidebarMain,
-  SidebarMainMenu
-} from '@kata-kit/layout';
+import { Content, Sidebar, SidebarAndContent, SidebarMain, SidebarMainMenu, Topbar, Wrapper } from '@kata-kit/layout';
 import { Robot } from '@kata-kit/loading';
-
+import * as React from 'react';
+import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-router-dom';
+import HomeSidebar from '../home/sidebar';
 import Logo from './components/Logo';
 import Selector from './components/Selector';
-
 import * as sidebar from './sidebar';
-import HomeSidebar from '../home/sidebar';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
+// Modules
 const HomeModule = React.lazy(() => import('../home'));
 const AboutModule = React.lazy(() => import('../about'));
+
+const ScheduleModule = React.lazy(() => import('../schedule'));
 
 class App extends React.Component<RouteComponentProps> {
   public render() {
@@ -33,9 +22,7 @@ class App extends React.Component<RouteComponentProps> {
 
     return (
       <Wrapper>
-        <Topbar logoContent={<Logo />} leftContent={<Selector />}>
-          TopbarRight
-        </Topbar>
+        <Topbar logoContent={<Logo />}></Topbar>
         <SidebarAndContent hasTop>
           <Sidebar hasTop collapsed={this.isSidebarCollapsed()}>
             <SidebarMain hasTop>
@@ -63,6 +50,7 @@ class App extends React.Component<RouteComponentProps> {
               <Switch>
                 <Route path="/first-demo" component={HomeModule} />
                 <Route path="/second-demo" component={AboutModule} />
+                <Route path="/schedule" component={ScheduleModule} />
                 <Route render={() => <Redirect to="/first-demo" />} />
               </Switch>
             </React.Suspense>
@@ -74,6 +62,7 @@ class App extends React.Component<RouteComponentProps> {
 
   private isSidebarCollapsed() {
     return this.props.location.pathname.search(/first-demo/) === -1;
+    // return false;
   }
 
   private getCurrentLocation() {

@@ -1,5 +1,5 @@
 {
-  "name": "wicara-starter",
+  "name": "hackweek",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -10,17 +10,22 @@
     "@kata-kit/drawer": "^0.7.0-beta.3",
     "@kata-kit/dropdown": "^0.7.0-beta.2",
     "@kata-kit/fonts": "^0.7.0-beta.1",
+    "@kata-kit/form": "^0.7.1",
     "@kata-kit/layout": "^0.7.0-beta.5",
     "@kata-kit/loading": "^0.7.0-beta.1",
     "@kata-kit/modal": "^0.7.0-beta.1",
     "@kata-kit/reset": "^0.7.0-beta.0",
     "@kata-kit/theme": "^0.7.0-beta.0",
     "@kata-kit/tooltip": "^0.7.0-beta.1",
+    "@types/reactstrap": "^7.1.3",
+    "bootstrap": "^4.3.1",
+    "jquery": "^3.3.1",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-hot-loader": "^4.6.0",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.3",
+    "reactstrap": "^8.0.0",
     "styled-components": "^4.1.3"
   },
   "scripts": {
