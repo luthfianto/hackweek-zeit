@@ -3,7 +3,10 @@
   "extends": ["tslint:recommended"],
   "rules": {
     "quotemark": false,
-    "member-access": false
+    "member-access": false,
+    "object-literal-sort-keys": false,
+    "semicolon": true,
+    "trailing-comma":false
   },
   "linterOptions": {
     "exclude": [

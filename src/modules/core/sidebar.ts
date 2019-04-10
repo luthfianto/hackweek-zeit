@@ -1,6 +1,6 @@
 import { SidebarMainMenu } from '~/interfaces/types';
 
-const menus: Record<string, SidebarMainMenu> = {
+export const menus: Record<string, SidebarMainMenu> = {
   first: {
     title: 'Event 1',
     path: '/first-demo',
@@ -9,14 +9,12 @@ const menus: Record<string, SidebarMainMenu> = {
   second: {
     title: 'Event 2',
     path: '/second-demo',
-    icon: 'dict'
+    icon: 'docs'
   }
   ,
   third: {
     title: 'Event 3',
     path: '/second-demo',
-    icon: 'dict'
+    icon: 'docs'
   }
 };
-
-export { menus };

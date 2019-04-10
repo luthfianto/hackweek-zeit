@@ -7,8 +7,8 @@ import HomeThirdPage from './pages/third';
 const HomeModule: React.FC<RouteComponentProps> = ({ match }) => (
   <Switch>
     <Route exact path={`${match.path}`} component={HomeFirstPage} />
-    <Route exact path={`${match.path}/second`} component={HomeSecondPage} />
-    <Route exact path={`${match.path}/third`} component={HomeThirdPage} />
+    {/* <Route exact path={`${match.path}/second`} component={HomeSecondPage} />
+    <Route exact path={`${match.path}/third`} component={HomeThirdPage} /> */}
   </Switch>
 );
 

@@ -4,22 +4,24 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import SidebarSubTitle from '../core/components/SidebarSubTitle';
 
 const links = [
-  { title: "Dashboard", icon: "bot" },
-  { title: "Stage", icon: "nlu" },
-  { title: "Schedule", icon: "bot" },
-  { title: "Speaker", icon: "bot" },
-  { title: "Ticket", icon: "bot" },
-  { title: "FAQ", icon: "bot" },
-  { title: "Event", icon: "bot" },
+  { title: "Speakers", icon: "users", isExact: true },
+  { title: "Stage", icon: "nlu", link: "stage-list" },
+  { title: "Schedule", icon: "trait", link: "schedule-list" },
+  { title: "Dashboard", icon: "dashboard" },
+  { title: "Ticket", icon: "view" },
+  { title: "FAQ", icon: "training" },
+  { title: "Event", icon: "success" },
 ]
 
-const HomeSidebar: React.FC<RouteComponentProps> = ({ match }) => (
+const SidebarEvent1: React.FC<RouteComponentProps> = ({ match }) => (
   <SidebarSub titleElement={<SidebarSubTitle>Sidebar</SidebarSubTitle>}>
-    <SidebarSubMenu asNavLink exact to={`/first-demo/`} icon="bot">First Page</SidebarSubMenu>
     {links.map((value: any, index) =>
-        <SidebarSubMenu key={index} asNavLink to={"/" + value.title.toLowerCase()} icon={value.icon}>{value.title}</SidebarSubMenu>
+      <SidebarSubMenu
+        key={index} exact={value.isExact} asNavLink to={"/" + (value.link || value.title.toLowerCase())} icon={value.icon}>
+        {value.title}
+      </SidebarSubMenu>
     )}
   </SidebarSub>
 );
 
-export default withRouter(HomeSidebar);
+export default withRouter(SidebarEvent1);

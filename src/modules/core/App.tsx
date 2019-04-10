@@ -1,20 +1,20 @@
 import { Content, Sidebar, SidebarAndContent, SidebarMain, SidebarMainMenu, Topbar, Wrapper } from '@kata-kit/layout';
 import { Robot } from '@kata-kit/loading';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import * as React from 'react';
 import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-router-dom';
-import HomeSidebar from '../home/sidebar';
+import SidebarEvent1 from '../home/sidebar';
 import Logo from './components/Logo';
-import Selector from './components/Selector';
 import * as sidebar from './sidebar';
-
-import 'bootstrap/dist/css/bootstrap.min.css';
-
+import ListStageModule from '../stage';
+import CreateStageModule from '../stage_create';
 
 // Modules
 const HomeModule = React.lazy(() => import('../home'));
 const AboutModule = React.lazy(() => import('../about'));
 
 const ScheduleModule = React.lazy(() => import('../schedule'));
+const ScheduleListModule = React.lazy(() => import('../schedule_list'));
 
 class App extends React.Component<RouteComponentProps> {
   public render() {
@@ -22,7 +22,9 @@ class App extends React.Component<RouteComponentProps> {
 
     return (
       <Wrapper>
-        <Topbar logoContent={<Logo />}></Topbar>
+        <Topbar logoContent={<Logo />}>
+          <span style={{fontSize: '28px', fontFamily: "Helvetica", fontWeight: "lighter"}}>zeit</span>
+        </Topbar>
         <SidebarAndContent hasTop>
           <Sidebar hasTop collapsed={this.isSidebarCollapsed()}>
             <SidebarMain hasTop>
@@ -45,13 +47,15 @@ class App extends React.Component<RouteComponentProps> {
               </React.Fragment>
             )}
           </Sidebar>
-          <Content>
+          <Content >
             <React.Suspense fallback={<Robot />}>
               <Switch>
-                <Route path="/first-demo" component={HomeModule} />
-                <Route path="/second-demo" component={AboutModule} />
+                <Route path="/speakers" component={HomeModule} />
                 <Route path="/schedule" component={ScheduleModule} />
-                <Route render={() => <Redirect to="/first-demo" />} />
+                <Route path="/schedule-list" component={ScheduleListModule} />
+                <Route path="/stage" component={CreateStageModule} />
+                <Route path="/stage-list" component={ListStageModule} />
+                <Route render={() => <Redirect to="/speakers" />} />
               </Switch>
             </React.Suspense>
           </Content>
@@ -61,8 +65,8 @@ class App extends React.Component<RouteComponentProps> {
   }
 
   private isSidebarCollapsed() {
-    return this.props.location.pathname.search(/first-demo/) === -1;
-    // return false;
+    // return this.props.location.pathname.search(/first-demo/) === -1;
+    return false;
   }
 
   private getCurrentLocation() {
@@ -74,9 +78,10 @@ class App extends React.Component<RouteComponentProps> {
   }
 
   private getSidebarSub(location: string) {
+    return <SidebarEvent1 />;
     switch (location) {
       case 'first-demo': {
-        return <HomeSidebar />;
+        return <SidebarEvent1 />;
       }
       default: {
         return null;

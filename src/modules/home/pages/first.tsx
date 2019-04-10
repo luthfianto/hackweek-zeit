@@ -1,12 +1,22 @@
-import { Button } from '@kata-kit/button';
 import { Board } from '@kata-kit/common';
 import { Dashboard } from '@kata-kit/dashboard';
-import { ModalBody, ModalFooter, ModalHeader } from '@kata-kit/modal';
 import * as React from 'react';
-import { Table } from 'reactstrap';
+import 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min.css';
+import { RightButton } from '../../buttons';
 
+
+import { Table } from 'reactstrap';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import 'reactstrap';
+
+// imp
+
+//@ts-ignore
+// import BootstrapTable from 'react-bootstrap-table-next';
+
+
+
+import MaterialIcon, {colorPalette} from 'material-icons-react';
 
 interface HomeFirstPageState {
   open: boolean;
@@ -27,66 +37,8 @@ class HomeFirstPage extends React.Component<{}, HomeFirstPageState> {
     super(props);
   }
 
-  toggleDrawer() {
-    this.setState((prevState) => ({
-      open: !prevState.open,
-    }));
-  }
-
-  renderInner() {
-    console.log("renderInner terpencet")
-    return (
-      <>
-        <ModalHeader title="Modal Title" />
-        <ModalBody>
-          <p>
-            Congratulations! You have opened this modal.{' '}
-            <a
-              href="https://www.youtube.com/watch?v=ctSYCoMF4z4"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Have some music.
-            </a>
-          </p>
-          <img
-            style={{ marginBottom: '1rem', maxWidth: '100%' }}
-            src="https://picsum.photos/1280/720/?random"
-            alt="Randomly-generated placeholder image from picsum.photos"
-          />
-        </ModalBody>
-        <ModalFooter>
-          <Button color="primary" onClick={() => this.toggleDrawer()}>
-            Close modal
-          </Button>
-        </ModalFooter>
-      </>
-    );
-  }
-
-  async componentDidMount() {
-    try {
-      const hasil1 = await fetch('https://bot-event.firebaseio.com/events.json');
-      const hasil = (await hasil1.json())[0]
-      console.log(hasil)
-      this.setState({ hasil });
-    } catch (err) {
-      this.setState({ errors: err.message });
-      console.error(err);
-      alert(err)
-    }
-  }
-
-  _masihKosong() {
-    return (
-      <Dashboard title={this.title} tooltip="Homepage of the Wicara demo">
-        masih kosong
-    </Dashboard>
-    );
-  }
-
-  render() {
-    const { hasil, errors } = this.state;
+  public render() {
+    const { hasil } = this.state;
     if (!hasil) {
       return this._masihKosong();
     }
@@ -96,24 +48,68 @@ class HomeFirstPage extends React.Component<{}, HomeFirstPageState> {
       return this._masihKosong();
     }
 
+    console.log(speakers)
+
     return <Dashboard title={this.title}  tooltip="Homepage of the Wicara demo"><Board>
-      <div style={{ textAlign: "right", marginBottom: "10px" }}>
-      <Button color="primary" onClick={()=> this.renderInner()}>+ Add</Button>
-      </div>
+      <RightButton />
+      <br/>
       <Table>
-        <thead><td>Judul</td></thead>
+        <thead>
+          <th>&nbsp; Speaker Name</th>
+          <th>Title</th>
+          {/* <th>Topic</th> */}
+          <th>Linkedin</th>
+        </thead>
         <tbody>
           {speakers.map((speaker: any) =>
             <>
-              <tr><td>{speaker.nama_speaker}</td></tr>
-              <tr><td>{speaker.nama_speaker}</td></tr>
-              <tr><td>{speaker.nama_speaker}</td></tr>
-            </>
+              <tr>
+                <td>{speaker.nama_speaker}</td>
+                <td>{speaker.title}</td>
+                {/* <td>{speaker.topik}</td> */}
+                <td>{speaker.linkedin}</td>
+              </tr>
+            </>,
           )}
         </tbody>
       </Table>
     </Board>
-    </Dashboard>
+    </Dashboard>;
+  }
+
+  public async componentDidMount() {
+    try {
+      const hasil1 = await fetch('https://bot-event.firebaseio.com/events.json');
+      const hasil = (await hasil1.json())[0];
+      console.log(hasil);
+      this.setState({ hasil });
+    } catch (err) {
+      this.setState({ errors: err.message });
+      console.error(err);
+      alert(err);
+    }
+  }
+
+  private _masihKosong() {
+    return <Dashboard title={this.title}  tooltip="Homepage of the Wicara demo"><Board>
+      <RightButton />
+      <br/>
+      <Table>
+        <thead>
+          <th>&nbsp; Speaker Name</th>
+          <th>Title</th>
+          {/* <th>Topic</th> */}
+          <th>Linkedin</th>
+        </thead>
+        <tbody>
+        </tbody>
+      </Table>
+    </Board>
+    </Dashboard>;
+  }
+
+  private _renderMantap() {
+
   }
 }
 

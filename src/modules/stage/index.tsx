@@ -1,59 +1,93 @@
 import { Board } from '@kata-kit/common';
 import { Dashboard } from '@kata-kit/dashboard';
 import * as React from 'react';
+import { RouteComponentProps } from 'react-router-dom';
+import { RightButton } from '../buttons';
+import DatatablePage from '../schedule_list/datatable';
 
-localStorage.setItem("konten", "peleeeer 123")
+const sampleData = {
+  columns: [
+    {
+      label: 'Stage Name',
+      field: 'name',
+      sort: 'asc',
+      width: 150,
+    },
+    {
+      label: 'Capacity',
+      field: 'capacity',
+      sort: 'asc',
+      width: 270,
+    },
+    {
+      label: 'Keyword Label',
+      field: 'label',
+      sort: 'asc',
+      width: 100,
+    },
+  ],
+  rows: [
+    {
+      name: 'Main Stage',
+      capacity: 420,
+      label: '[main, utama]',
+    },
+    {
+      name: 'Product Development Stage',
+      capacity: 69,
+      label: '[product, dev]',
+    },
+  ],
+};
 
-const AboutModule = () => (
-  <Dashboard title="About">
-    <Board>
-      <p>{localStorage.getItem("konten")}</p>
-    </Board>
-    <br/>
-    <Board>
-      <p>
-         ipsum dolor sit amet, consectetur adipiscing elit. Quod autem
-        satis est, eo quicquid accessit, nimium est; Pauca mutat vel plura sane;
-        Quae diligentissime contra Aristonem dicuntur a Chryippo.{' '}
-        <a
-          href="https://www.youtube.com/watch?v=BVggF2TxSu8"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Quod cum dixissent, ille contra.
-        </a>{' '}
-        <b>Minime vero, inquit ille, consentit.</b>{' '}
-        <b>Odium autem et invidiam facile vitabis.</b>{' '}
-      </p>
+const MyTable = () => DatatablePage(sampleData)
 
-      <p>
-        Quis istud possit, inquit, negare? Bonum integritas corporis: misera
-        debilitas. Itaque rursus eadem ratione, qua sum paulo ante usus,
-        haerebitis. Nec vero sum nescius esse utilitatem in historia, non modo
-        voluptatem. Cur deinde Metrodori liberos commendas?{' '}
-        <a
-          href="https://www.youtube.com/watch?v=mUGDxyG1kOI"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Quae est igitur causa istarum angustiarum?
-        </a>{' '}
-        Quod si ita sit, cur opera philosophiae sit danda nescio. Philosophi
-        autem in suis lectulis plerumque moriuntur.{' '}
-      </p>
+export default class ListStageModule extends React.PureComponent<RouteComponentProps> {
+  readonly title = "Stage List";
 
-      <p>
-        Duo Reges: constructio interrete. <b>Ita nemo beato beatior.</b> Eam si
-        varietatem diceres, intellegerem, ut etiam non dicente te intellego;
-        Teneo, inquit, finem illi videri nihil dolere. <b>Frater et T.</b> A
-        primo, ut opinor, animantium ortu petitur origo summi boni. Iam in
-        altera philosophiae parte. Et si turpitudinem fugimus in statu et motu
-        corporis, quid est cur pulchritudinem non sequamur? Nonne videmus quanta
-        perturbatio rerum omnium consequatur, quanta confusio?{' '}
-        <i>Haec igitur Epicuri non probo, inquam.</i>{' '}
-      </p>
-    </Board>
-  </Dashboard>
-);
+  constructor(props: RouteComponentProps) {
+    super(props);
+  }
 
-export default AboutModule;
+  routeChange() {
+    this.props.history.push("stage");
+  }
+
+  render() {
+    return (
+      <Dashboard title={this.title}>
+        <Board>
+          <RightButton onClick={this.routeChange.bind(this)} />
+          <br />
+          <MyTable />
+        </Board>
+      </Dashboard>
+    );
+  }
+
+
+  public async componentDidMount() {
+    try {
+      const hasil1 = await fetch('https://bot-event.firebaseio.com/events.json');
+      const hasil = (await hasil1.json())[0];
+      console.log(hasil);
+      this.setState({ hasil });
+    } catch (err) {
+      this.setState({ errors: err.message });
+      console.error(err);
+      alert(err);
+    }
+  }
+
+  private _masihKosong() {
+    return (
+      <Dashboard title={this.title}>
+        <Board>
+          <RightButton onClick={this.routeChange.bind(this)} />
+          <br />
+          <DatatablePage />
+        </Board>
+      </Dashboard>
+    );
+  }
+}
