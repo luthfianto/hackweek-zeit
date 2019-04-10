@@ -1,9 +1,18 @@
 import { Board } from '@kata-kit/common';
 import { Dashboard } from '@kata-kit/dashboard';
+// @ts-ignore
+import { MDBBtn, MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { RightButton } from '../buttons';
 import DatatablePage from '../schedule_list/datatable';
+import { Button } from '@kata-kit/button';
+
+const action = <>
+  <Button size="sm"><i className="icon-edit" /></Button>
+  <Button size="sm" color="danger"><i className="icon-trash" /></Button>
+  <Button size="sm" color="primary"><i className="icon-view" /></Button>
+</>;
 
 const sampleData = {
   columns: [
@@ -25,22 +34,40 @@ const sampleData = {
       sort: 'asc',
       width: 100,
     },
+    {
+      label: 'Action',
+      field: 'action',
+      sort: 'asc',
+      width: 50,
+    }
   ],
   rows: [
     {
       name: 'Main Stage',
-      capacity: 420,
-      label: '[main, utama]',
+      capacity: 2000,
+      label: 2,
+      action
     },
     {
       name: 'Product Development Stage',
-      capacity: 69,
-      label: '[product, dev]',
+      capacity: 100,
+      label: 1,
+      action
+    },
+    {
+      name: 'Technology Stage',
+      capacity: 100,
+      label: 1,
+      action
+    },
+    {
+      name: 'Code & Build Stage',
+      capacity: 200,
+      label: 1,
+      action
     },
   ],
 };
-
-const MyTable = () => DatatablePage(sampleData)
 
 export default class ListStageModule extends React.PureComponent<RouteComponentProps> {
   readonly title = "Stage List";
@@ -59,7 +86,16 @@ export default class ListStageModule extends React.PureComponent<RouteComponentP
         <Board>
           <RightButton onClick={this.routeChange.bind(this)} />
           <br />
-          <MyTable />
+          <MDBTable
+            striped
+            bordered
+            hover
+            searching={false}
+            paging={false}
+          >
+            <MDBTableHead columns={sampleData.columns} />
+            <MDBTableBody rows={sampleData.rows} />
+          </MDBTable>
         </Board>
       </Dashboard>
     );
